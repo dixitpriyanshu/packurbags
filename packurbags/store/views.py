@@ -50,7 +50,8 @@ def updateItem(request):
 
 	orderItem, created = OrderItem.objects.get_or_create(oder=order, package=package)
 
-	orderItem.quantity = 0
+	if orderItem.quantity == None:
+		orderItem.quantity = 0
 
 	if action == 'add':
 		orderItem.quantity = (orderItem.quantity + 1)
