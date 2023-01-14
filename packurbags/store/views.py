@@ -42,22 +42,24 @@ def updateItem(request):
 	packageId = data['packageId']
 	action = data['action']
 	print('Action:', action)
-	print('PackageId:', packageId)
+	print('Package:', packageId)
 
-	# customer = request.user.customer
-	# package = Package.objects.get(id=packageId)
-	# order, created = Order.objects.get_or_create(customer=customer, complete=False)
+	customer = request.user.customer
+	package = Package.objects.get(id=packageId)
+	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-	# orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+	orderItem, created = OrderItem.objects.get_or_create(oder=order, package=package)
 
-	# if action == 'add':
-	# 	orderItem.quantity = (orderItem.quantity + 1)
-	# elif action == 'remove':
-	# 	orderItem.quantity = (orderItem.quantity - 1)
+	orderItem.quantity = 0
 
-	# orderItem.save()
+	if action == 'add':
+		orderItem.quantity = (orderItem.quantity + 1)
+	elif action == 'remove':
+		orderItem.quantity = (orderItem.quantity - 1)
 
-	# if orderItem.quantity <= 0:
-	# 	orderItem.delete()
+	orderItem.save()
+
+	if orderItem.quantity <= 0:
+		orderItem.delete()
 
 	return JsonResponse('Item was added', safe=False)
